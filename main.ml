@@ -212,6 +212,14 @@ let table2 (var1: string) (var2: string) (expr: bool_expr): (bool * bool * bool)
     (true, false, traverse (var1) (var2) (true) (false) (expr)); 
     (false, true, traverse (var1) (var2) (false) (true) (expr));  
     (false, false, traverse (var1) (var2) (false) (false) (expr))];;
+(* Problem 49 *)
+(* TODO: This does not work as intended *)
+let gray (count: int) : string list =
+    let rec generate_string (str: string) (count: int) : string list =
+        match count with
+        | 0 -> [str]
+        | x -> generate_string (str ^ "0") (count -1) @ generate_string(str ^ "1") (count -1) in
+    generate_string ("") (count);;
 
 type 'a binary_tree =
     | Empty
