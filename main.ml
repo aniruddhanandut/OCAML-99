@@ -178,3 +178,41 @@ let rec gcd (k1: int) (k2: int) : (int) =
     let rem = k1 mod k2 in
     if rem = 0 then k2
     else gcd (k2) (rem);;
+
+(* Problem 33 *)
+let coprime (k1: int) (k2: int): bool = 
+    gcd (k1) (k2) = 1;;
+
+(* 
+   Problem 34 - 41 are also kinda boring
+*)
+
+(* Skipping Logic too :( *)
+(* Revisiting Logic because I am addicted to ocaml *)
+type bool_expr =
+    | Var of string
+    | Not of bool_expr
+    | And of bool_expr * bool_expr
+    | Or of bool_expr * bool_expr;;
+(* Problem 46 *)
+(* This assumes two variables are passed and whats to evaluate the expression*)
+(* Because the lists are constant doesnt matter whether its a constant list or using @ to concatnate *)
+let table2 (var1: string) (var2: string) (expr: bool_expr): (bool * bool * bool) list = 
+    let rec traverse (var1: string) (var2: string) (var1_val: bool) (var2_val: bool) 
+    (expr: bool_expr): (bool) = 
+        match expr with
+        | Var x when x = var1 -> var1_val
+        | Var x when x = var2 -> var2_val
+        | Not x -> not (traverse (var1) (var2) (var1_val) (var2_val) (x))
+        | And (x, y) -> traverse (var1) (var2) (var1_val) (var2_val) (x) && 
+            traverse (var1) (var2) (var1_val) (var2_val) (y)
+        | Or (x, y) -> traverse (var1) (var2) (var1_val) (var2_val) (x) || 
+            traverse (var1) (var2) (var1_val) (var2_val) (y) in
+    [(true, true, traverse (var1) (var2) (true) (true) (expr)); 
+    (true, false, traverse (var1) (var2) (true) (false) (expr)); 
+    (false, true, traverse (var1) (var2) (false) (true) (expr));  
+    (false, false, traverse (var1) (var2) (false) (false) (expr))];;
+
+type 'a binary_tree =
+    | Empty
+    | Node of 'a * 'a binary_tree * 'a binary_tree;;
