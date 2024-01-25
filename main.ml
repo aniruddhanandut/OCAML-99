@@ -221,6 +221,41 @@ let gray (count: int) : string list =
         | x -> generate_string (str ^ "0") (count -1) @ generate_string(str ^ "1") (count -1) in
     generate_string ("") (count);;
 
+(* Problem 55 *)
+
 type 'a binary_tree =
     | Empty
     | Node of 'a * 'a binary_tree * 'a binary_tree;;
+
+let cbal_tree (size: int) : char binary_tree list = 
+    let rec create_tree (tree: char binary_tree) (size: int) (right: int) (left: int) 
+    : char binary_tree list = 
+        if right + left = size then [tree]
+        else if left > right then create_tree (Node ('x', Empty, tree)) (size) (right+1) (left)
+        else create_tree (Node ('x', tree, Empty)) (size) (right) (left+1) in
+    create_tree (Empty) (size) (0) (0);;
+
+(*
+[Node ('x', Empty, 
+    Node ('x', 
+        Node ('x', Empty, 
+            Node ('x', Empty, Empty)
+        ), 
+    Empty)
+)]
+*)
+
+(* Problem 57 *)
+(* I was confused on the accepting node in the switch syntax, but I got it now *)
+let construct (list: int list) : int binary_tree =
+    let rec insert (tree: int binary_tree) (value: int): (int binary_tree) =
+        match tree with
+        | Empty -> Node (value, Empty, Empty)
+        | Node (x, y, z) when x > value -> Node (x, insert (y) (value), z)
+        | Node (x, y, z) -> Node (x, y, insert (z) (value)) in
+    let rec insert_total (tree: int binary_tree) (list: int list): int binary_tree = 
+        match list with
+        | [] -> tree
+        | x :: rest -> insert_total (insert (tree) (x)) (rest) in
+    insert_total (Empty) (list);;
+
