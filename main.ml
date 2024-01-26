@@ -259,3 +259,24 @@ let construct (list: int list) : int binary_tree =
         | x :: rest -> insert_total (insert (tree) (x)) (rest) in
     insert_total (Empty) (list);;
 
+(* Problem 57 part 2 *)
+(* I have no idea if I wrote smth valid or if I am on complete crack *)
+let rec is_symmetric (tree: 'a binary_tree) : bool =
+    let rec size (internal_tree: 'a binary_tree) : int =
+        match internal_tree with
+        | Empty -> 0
+        | Node (x, y, z) -> 1 + size (y) + size (z) in
+    match tree with
+    | Empty -> true
+    | Node(x, y, z) -> size (y) = size(z) && is_symmetric (y) && is_symmetric (z);;
+
+
+
+
+
+
+
+
+
+
+
